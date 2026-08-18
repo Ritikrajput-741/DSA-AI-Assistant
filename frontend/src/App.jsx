@@ -11,6 +11,8 @@ function App() {
 
   const [loading, setLoading] = useState(false);
 
+  // --> 
+  
   const sendQuestion = async () => {
     const trimmedQuestion = question.trim();
 

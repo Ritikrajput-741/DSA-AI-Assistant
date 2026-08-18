@@ -1,7 +1,7 @@
 import "dotenv/config";
 
-import express from "express";
 import cors from "cors";
+import express from "express";
 
 import chatRoutes from "./routes/chat.routes.js";
 
@@ -12,7 +12,9 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "https://dsa-ai-assistant-kappa.vercel.app",
+    methods: ["POST", "GET"],
+    credentials: true,
   }),
 );
 
