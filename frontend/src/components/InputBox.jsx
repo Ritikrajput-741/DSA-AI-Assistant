@@ -1,7 +1,12 @@
 import { Send } from "lucide-react";
 
+/* This page handles user input */
+
 function InputBox({ question, setQuestion, onSubmit, loading }) {
   const handleKeyDown = (e) => {
+    // Enter sends the message
+    // Shift + Enter creates a new line
+
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
 
@@ -17,10 +22,16 @@ function InputBox({ question, setQuestion, onSubmit, loading }) {
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask your DSA question..."
-          rows="1"
+          rows={1}
+          disabled={loading}
         />
 
-        <button onClick={onSubmit} disabled={loading || !question.trim()}>
+        <button
+          className="send-button"
+          onClick={onSubmit}
+          disabled={loading || !question.trim()}
+          aria-label="Send message"
+        >
           <Send size={19} />
         </button>
       </div>

@@ -1,16 +1,20 @@
 import {
   Brain,
-  Plus,
   Code2,
+  Database,
   GitBranch,
   Layers,
   Network,
-  Database,
+  Plus,
 } from "lucide-react";
+
+/* This page contains the DSA sidebar */
 
 function Sidebar({ onNewChat }) {
   return (
     <aside className="sidebar">
+      {/* Logo */}
+
       <div className="logo">
         <div className="logo-icon">
           <Brain size={21} />
@@ -21,10 +25,14 @@ function Sidebar({ onNewChat }) {
         </div>
       </div>
 
+      {/* New chat */}
+
       <button className="new-chat" onClick={onNewChat}>
         <Plus size={18} />
         New Chat
       </button>
+
+      {/* Topics */}
 
       <div className="section-title">DSA TOPICS</div>
 
@@ -54,6 +62,8 @@ function Sidebar({ onNewChat }) {
           Dynamic Programming
         </button>
       </div>
+
+      {/* Online status */}
 
       <div className="sidebar-bottom">
         <div className="online-dot"></div>

@@ -1,20 +1,16 @@
 import { useState } from "react";
 
-import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
 import InputBox from "./components/InputBox";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   const [messages, setMessages] = useState([]);
-
   const [question, setQuestion] = useState("");
-
   const [loading, setLoading] = useState(false);
 
-  // --> 
-  
-  const sendQuestion = async () => {
-    const trimmedQuestion = question.trim();
+  const sendQuestion = async (customQuestion = null) => {
+    const trimmedQuestion = (customQuestion ?? question).trim();
 
     if (!trimmedQuestion || loading) {
       return;
@@ -26,10 +22,13 @@ function App() {
       content: trimmedQuestion,
     };
 
+    // Show user message immediately
     setMessages((prev) => [...prev, userMessage]);
 
+    // Clear input
     setQuestion("");
 
+    // Show thinking UI
     setLoading(true);
 
     try {
@@ -47,10 +46,12 @@ function App() {
 
       const data = await response.json();
 
+      // Backend error
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
 
+      // AI message
       const aiMessage = {
         role: "assistant",
         content: data.answer,
@@ -58,7 +59,7 @@ function App() {
 
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      console.log(error);
+      console.error("Frontend Chat Error:", error);
 
       setMessages((prev) => [
         ...prev,
@@ -77,21 +78,46 @@ function App() {
     setQuestion("");
   };
 
+  const handleSuggestion = (text) => {
+    sendQuestion(text);
+  };
+
   return (
     <div className="app">
       <Sidebar onNewChat={newChat} />
 
       <main className="main">
+        {/* HEADER */}
+
         <header className="header">
-          <div>🧠 DSA Mentor</div>
+          <div className="header-left">
+            <div className="header-icon">🧠</div>
+
+            <div>
+              <div className="header-title">DSA Mentor</div>
+
+              <div className="header-status">
+                <span></span>
+                AI Online
+              </div>
+            </div>
+          </div>
         </header>
 
-        <Chat messages={messages} loading={loading} />
+        {/* CHAT */}
+
+        <Chat
+          messages={messages}
+          loading={loading}
+          onSuggestion={handleSuggestion}
+        />
+
+        {/* INPUT */}
 
         <InputBox
           question={question}
           setQuestion={setQuestion}
-          onSubmit={sendQuestion}
+          onSubmit={() => sendQuestion()}
           loading={loading}
         />
       </main>
